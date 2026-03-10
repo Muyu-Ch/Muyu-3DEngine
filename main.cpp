@@ -1,0 +1,12 @@
+#include"math/Vector3.h"
+
+int main()
+{
+    Vector3 v1(1,2,3);
+    Vector3 v2(4,5,6);
+    v1.print();
+    v2.print();
+    Vector3 v3=v1+v2;
+    v3.print();
+    return 0;
+}
