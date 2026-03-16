@@ -32,12 +32,15 @@ public:
     // 参数：angle 旋转角度（单位：度，方便新手使用，内部转弧度）
     // 返回：对应的4x4旋转矩阵
     static Matrix4 RotateY(float angle);
+    // 绕X轴旋转矩阵
+    static Matrix4 RotateX(float angle);
+    // 绕Z轴旋转矩阵
+    static Matrix4 RotateZ(float angle);
 
     Matrix4 Multiply(const Matrix4& other) const;
-    // ============== 第三部分：核心运算（矩阵作用于坐标） ==============
-    // 1. 矩阵乘以Vector3（核心！把变换应用到具体坐标上）
-    // 参数：vec 要变换的三维坐标
-    // 返回：变换后的新三维坐标
+
+    Matrix4 operator*(const Matrix4& other) const;
+
     Vector3 MultiplyVector(const Vector3& vec) const;
 
     // ============== 第四部分：辅助功能（可选但实用） ==============

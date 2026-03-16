@@ -52,6 +52,32 @@ Matrix4 Matrix4::RotateY(float angle)
     return M;
 }
 
+Matrix4 Matrix4::RotateX(float angle)
+{
+    const float radians = angle/180.0f*3.1415926;
+    const float s=std::sin(radians);
+    const float c=std::cos(radians);
+    Matrix4 M;
+    M.m[1][1] = c;
+    M.m[1][2] = -s;
+    M.m[2][1] = s;
+    M.m[2][2] = c;
+    return M;
+}
+
+Matrix4 Matrix4::RotateZ(float angle)
+{
+    const float radians = angle/180.0f*3.1415926;
+    const float s=std::sin(radians);
+    const float c=std::cos(radians);
+    Matrix4 M;
+    M.m[0][0] = c;
+    M.m[0][1] = s;
+    M.m[1][0] = -s;
+    M.m[1][1] = c;
+    return M;
+}
+
 Matrix4 Matrix4::Multiply(const Matrix4& other) const {
     Matrix4 result; // 结果矩阵初始化为单位矩阵
     // 4x4矩阵乘法：result[i][j] = ∑(this[i][k] * other[k][j])
@@ -64,6 +90,11 @@ Matrix4 Matrix4::Multiply(const Matrix4& other) const {
         }
     }
     return result;
+}
+
+Matrix4 Matrix4::operator*(const Matrix4& other) const
+{
+    return this->Multiply(other);
 }
 
 Vector3 Matrix4::MultiplyVector(const Vector3& vec) const
