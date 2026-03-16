@@ -53,21 +53,14 @@ bool Render::Init()
     return true;
 }
 
-// 以下是空实现（保证编译通过）
-// render.cpp 里实现 Project 函数
 void Render::Project(const Vector3& point, int& screen_x, int& screen_y)
 {
-    // 1. 核心逻辑：3D坐标 → 2D屏幕坐标
-    // ① 把3D点的x轴映射到屏幕x轴：窗口中心x + 3D x * 缩放系数
-    screen_x = window_width / 2 + static_cast<int>((double)point.x/point.z * scale);
-    // ② 把3D点的y轴映射到屏幕y轴：窗口中心y - 3D y * 缩放系数
-    // （减号是因为SDL的y轴向下，而3D的y轴向上）
-    screen_y = window_height / 2 - static_cast<int>((double)point.y/point.z * scale);
-
-    // ③ z轴：正交投影下暂时忽略（z只影响前后遮挡，后续再加）
-    // 注意：scale是你定义的缩放系数（默认50），比如3D的1个单位 = 屏幕50个像素
+    if (point.z>0)
+    {
+        screen_x = window_width / 2 + static_cast<int>((double)point.x/point.z * scale);
+        screen_y = window_height / 2 - static_cast<int>((double)point.y/point.z * scale);
+    }
 }
-
 
 void Render::DrawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
@@ -183,7 +176,6 @@ void Render::Present()
 
 void Render::WaitQuit()
 {
-    // 简单的退出逻辑：等待ESC键按下
     bool quit = false;
     SDL_Event e;
     while (!quit)
@@ -201,7 +193,6 @@ void Render::WaitQuit()
                 quit = true;
             }
         }
-        // 短暂延时，避免CPU占用过高
         SDL_Delay(10);
     }
 }
