@@ -2,6 +2,8 @@
 #define INC_3DENGINE_RENDER_H
 
 #include "Vector3.h"
+#include "Point.h"
+#include<vector>
 // SDL2头文件
 #include <SDL2/SDL.h>
 
@@ -24,13 +26,21 @@ public:
     bool Init();
 
     // 3D坐标→2D屏幕坐标（正交投影）
-    void Project(const Vector3& point, int& screen_x, int& screen_y);
+    void Project(const Vector3& point3d, Point& points2d);
 
     // 画像素点（指定颜色）
-    void DrawPixel(int x, int y, Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a=255);
+    void DrawPixel(int x, int y,
+        Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a=255);
 
 
-    void DrawLine(int x1, int y1, int x2, int y2,Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a=255);
+    void DrawLine(Point point1,Point point2,
+        Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a=255);
+
+    void DrawLines(
+        std::vector<std::pair<Point*,Point*> >& lines,
+        Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a=255
+        );
+
     // 清空窗口（黑色背景）
     void Clear();
 

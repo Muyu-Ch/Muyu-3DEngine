@@ -1,5 +1,6 @@
 // render.cpp 补全后
 #include "Render.h"
+#include "Point.h"
 #include<iostream>
 
 Render::Render(int width, int height, float scale)
@@ -53,12 +54,12 @@ bool Render::Init()
     return true;
 }
 
-void Render::Project(const Vector3& point, int& screen_x, int& screen_y)
+void Render::Project(const Vector3& point3d, Point& point2d)
 {
-    if (point.z>0)
+    if (point3d.z>0)
     {
-        screen_x = window_width / 2 + static_cast<int>((double)point.x/point.z * scale);
-        screen_y = window_height / 2 - static_cast<int>((double)point.y/point.z * scale);
+        point2d.x = window_width / 2 + static_cast<int>((double)point3d.x/point3d.z * scale);
+        point2d.y = window_height / 2 - static_cast<int>((double)point3d.y/point3d.z * scale);
     }
 }
 
@@ -80,8 +81,13 @@ void Render::DrawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     SDL_RenderDrawPoint(renderer, x, y);
 }
 
-void Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void Render::DrawLine(Point point1, Point point2, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
+    int x1=point1.x;
+    int x2=point2.x;
+    int y1=point1.y;
+    int y2=point2.y;
+
     bool isOutLeft = (x1 < 0 && x2 < 0);
     bool isOutRight = (x1 > window_width && x2 > window_width);
     bool isOutTop = (y1 < 0 && y2 < 0);
@@ -151,6 +157,17 @@ void Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
                 SDL_RenderDrawPoint(renderer, x, y);
             }
         }
+    }
+}
+
+void Render::DrawLines(
+        std::vector<std::pair<Point*,Point*> >& lines,
+        Uint8 r, Uint8 g, Uint8 b, Uint8 a
+        )
+{
+    for (size_t i=0; i<lines.size(); i++)
+    {
+        DrawLine(*lines[i].first, *lines[i].second,r,g,b,a);
     }
 }
 
